@@ -10,10 +10,11 @@
  * Projekt der HSLU PRG FS23
  */
 
-import java.util.Scanner;
-
 import ch.hslu.prg.leds.proxy.LedColor;
-import ch.hslu.prg.leds.proxy.LedService; 
+import ch.hslu.prg.leds.proxy.LedService;
+
+import java.util.Random;
+import java.util.Scanner;
 
 public class ClientApp {
 
@@ -23,10 +24,13 @@ public class ClientApp {
         LedService service = new LedService();
 
         // Aufgabe 1: Call ledsOnOff
-       // ledsOnOff(service);
+      //  ledsOnOff(service);
 
         // Aufgabe 2: Call switchEvenOdd
-        switchEvenOdd(service);
+        // switchEvenOdd(service);
+
+        // Aufgabe 3: Call switchRandom
+        switchRandom(service);
     }
 
     
@@ -97,7 +101,7 @@ public class ClientApp {
             // 4. Einschaltung der LEDs von rechts nach links 
             for (int i = addAnzahlLEDs; i >= 0; i--) {
                 service.turnLedOn(i);
-                service.setDelayInMillis(300);
+                service.setDelayInMillis(500);
             }
 
             // 5. Anhalten der Ausführung der Methode für 250 milisekunden
@@ -106,7 +110,7 @@ public class ClientApp {
             // 6. Ausschaltung aller LEDs von Links nach rechts
             for (int j = 0; j <= addAnzahlLEDs; j++) {
                 service.turnLedOff(j);
-                service.setDelayInMillis(300);
+                service.setDelayInMillis(500);
             }
 
             // 7. Anhalten der Ausführung der Methode für 250 milisekunden
@@ -146,7 +150,7 @@ public class ClientApp {
         Scanner sc = new Scanner(System.in);
 
         // 1. Einlesen von addAnzahlLEDs
-        System.out.print("Bitte geben Sie die Anzahl der LEDs ein, welche neu im Steckboard eingesteckt wurden, (vielfaches von 8): ");
+        System.out.print("Bitte geben Sie die Anzahl der LEDs ein, welche neu im Steckboard eingesteckt wurden (vielfaches von 8): ");
         do {
             addAnzahlLEDs = sc.nextInt();
 
@@ -155,7 +159,7 @@ public class ClientApp {
                 break; 
             }
 
-            System.out.print(addAnzahlLEDs + " ist nicht durch 8 teilbar und entsprechend Invalid. Bitte geben Sie eine neue Zahl ein.");
+            System.out.print(addAnzahlLEDs + " ist nicht durch 8 teilbar und entsprechend Invalid. Bitte geben Sie eine neue Zahl ein: ");
 
         } while (isVielfachesVonAcht != true);
 
@@ -169,7 +173,7 @@ public class ClientApp {
             for (int j = 0; j <= addAnzahlLEDs; j++) {
                 if (j == 0 || j % 2 == 0) {
                     service.turnLedOn(j);
-                    service.setDelayInMillis(300);
+                    service.setDelayInMillis(500);
                 }
             }
 
@@ -180,10 +184,10 @@ public class ClientApp {
             for (int k = 0; k <= addAnzahlLEDs; k++) {
                 if (k == 0 || k % 2 == 0) {
                     service.turnLedOff(k);
-                    service.setDelayInMillis(300);
+                    service.setDelayInMillis(500);
                 } else {
                     service.turnLedOn(k);
-                    service.setDelayInMillis(300);
+                    service.setDelayInMillis(500);
                 }
             }
 
@@ -193,7 +197,7 @@ public class ClientApp {
             // 7. Ausschalten aller LEDs und anhalten für 1 Sekunde
             for (int l = 0; l <= addAnzahlLEDs; l++) {
                 service.turnLedOff(l);
-                service.setDelayInMillis(300);
+                service.setDelayInMillis(500);
             }
 
             service.stopExecutionFor(1000);
@@ -206,4 +210,92 @@ public class ClientApp {
         sc.close();
     }
 
+    /*
+    * Aufgabe 3: Teilaufgaben 3.1 & 3.2 
+    * 
+    * Methoden Name: switchRandom
+    * Variablen:
+    *    int addAnzahlLEDs -> anzahl einzufügender LEDs
+    *    boolean isVielfachesVonSechzehn -> true/false für Feststellung ob addAnzahlLEDs vielfaches von 16 ist.
+    *    int randNum -> Random Nummervariable zum Check ob das LED bereits an ist
+    *    int i, j, k, l -> Zählvariabel
+    * 
+    * Programmierer: Yann Santschi
+    */
+
+    private static void switchRandom(LedService service) {
+
+        // Variabel deklaration
+        int addAnzahlLEDs;
+        boolean isVielfachesVonSechzehn = false; 
+        int randNum; 
+
+        // Scanner & Random definition
+        Scanner sc = new Scanner(System.in);
+        Random rn = new Random();
+
+        // 1. Einlesen von addAnzahlLEDs
+        System.out.print("Bitte geben Sie die Anzahl der LEDs ein, welche neu im Steckboard eingesteckt wurden (vielfaches von 16): ");
+        do {
+            addAnzahlLEDs = sc.nextInt();
+
+            if (addAnzahlLEDs % 16 == 0) {
+                isVielfachesVonSechzehn = true; 
+                break; 
+            }
+
+            System.out.print(addAnzahlLEDs + " ist nicht durch 16 teilbar und entsprechend Invalid. Bitte geben Sie eine neue Zahl ein: ");
+
+        } while (isVielfachesVonSechzehn != true);
+
+        // 2. Hinzufügen der LEDs & anhalten der Ausführung
+        service.addLeds(addAnzahlLEDs, LedColor.RANDOM);
+        service.stopExecutionFor(2000);
+
+        // 8. Schritte 3, 4, 5, 6, 7 insgesamt 1 durchlaufen und 3 mal wiederholen -> 4 iterationen
+        for (int i = 0; i < 5; i++) {
+
+            // 3. Random Anschaltung der Hälfte aller LEDs  
+            for (int j = 0; j < addAnzahlLEDs / 2; j++) {
+
+                // Generation der Random Nummer & Check ob dieses LED bereits eingeschalten ist
+                do {
+                    randNum = rn.nextInt(0, addAnzahlLEDs); 
+                } while(service.isOn(randNum) == true);
+
+                // Einschaltung LEDs
+                service.turnLedOn(randNum);
+                service.setDelayInMillis(500);
+            }
+
+            // 4. Anhalten der Methode für 1 Sekunde
+            service.stopExecutionFor(1000);
+
+            // 5. Umschaltung aller LEDs von ein zu aus und aus zu ein
+            for (int k = 0; k < addAnzahlLEDs; k++) {
+                if (service.isOn(k) == true) {
+                    service.turnLedOff(k);
+                    service.setDelayInMillis(500);
+                } else {
+                    service.turnLedOn(k);
+                    service.setDelayInMillis(500);
+                }
+            }
+
+            // 6. Anhalten der Methode für 1 Sekunde
+            service.stopExecutionFor(1000);
+
+            // 7. Ausschalten aller LEDs und anhalten für 1 Sekunde
+            for (int l = 0; l <= addAnzahlLEDs; l++) {
+                service.turnLedOff(l);
+                service.setDelayInMillis(500);
+            }
+        } 
+   
+        // 9. Zurücksetzen der Anzeige
+        service.reset();
+
+        // Scanner schliessen
+        sc.close();
+    }
 }
