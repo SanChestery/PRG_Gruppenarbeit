@@ -22,10 +22,10 @@ public class ClientApp {
         // Erstellung neuer Instanz der Klasse LedService
         LedService service = new LedService();
 
-        // Call ledsOnOff
-        ledsOnOff(service);
+        // Aufgabe 1: Call ledsOnOff
+       // ledsOnOff(service);
 
-        // Call switchEvenOdd
+        // Aufgabe 2: Call switchEvenOdd
         switchEvenOdd(service);
     }
 
@@ -125,10 +125,13 @@ public class ClientApp {
     }
 
     /*
-    * Aufgabe 2: 
+    * Aufgabe 2: Teilaufgaben 2.1 & 2.2 
     * 
-    * Methoden Name:   switchEvenOdd
-    * Variablen: 
+    * Methoden Name: switchEvenOdd
+    * Variablen:
+    *    int addAnzahlLEDs -> anzahl einzufügender LEDs
+    *    boolean isVielfachesVonAcht -> true/false für Feststellung ob addAnzahlLEDs vielfaches von 8 ist.
+    *    int i, j, k, l -> Zählvariabel
     * 
     * Programmierer: Yann Santschi
     */
@@ -136,6 +139,71 @@ public class ClientApp {
     private static void switchEvenOdd(LedService service) {
         
         // Variabel deklaration
+        int addAnzahlLEDs;
+        boolean isVielfachesVonAcht = false; 
+
+        // Scanner definition
+        Scanner sc = new Scanner(System.in);
+
+        // 1. Einlesen von addAnzahlLEDs
+        System.out.print("Bitte geben Sie die Anzahl der LEDs ein, welche neu im Steckboard eingesteckt wurden, (vielfaches von 8): ");
+        do {
+            addAnzahlLEDs = sc.nextInt();
+
+            if (addAnzahlLEDs % 8 == 0) {
+                isVielfachesVonAcht = true; 
+                break; 
+            }
+
+            System.out.print(addAnzahlLEDs + " ist nicht durch 8 teilbar und entsprechend Invalid. Bitte geben Sie eine neue Zahl ein.");
+
+        } while (isVielfachesVonAcht != true);
+
+        // 2. Hinzufügen der LEDs in blau & 2 Sekunden warten
+        service.addLeds(addAnzahlLEDs, LedColor.BLUE);
+        service.stopExecutionFor(2000);
+
+        for (int i = 0; i < 5; i++) {
+    
+            // 3. Anschalten aller geraden LEDs
+            for (int j = 0; j <= addAnzahlLEDs; j++) {
+                if (j == 0 || j % 2 == 0) {
+                    service.turnLedOn(j);
+                    service.setDelayInMillis(300);
+                }
+            }
+
+            // 4. Anhalten der Ausführung für 1 Sekunde
+            service.stopExecutionFor(1000);
+
+            // 5. Umschaltung der LEDs von ein zu aus und aus zu ein
+            for (int k = 0; k <= addAnzahlLEDs; k++) {
+                if (k == 0 || k % 2 == 0) {
+                    service.turnLedOff(k);
+                    service.setDelayInMillis(300);
+                } else {
+                    service.turnLedOn(k);
+                    service.setDelayInMillis(300);
+                }
+            }
+
+            // 6. Anhalten der Ausführung für 1 Sekunde
+            service.stopExecutionFor(1000);
+
+            // 7. Ausschalten aller LEDs und anhalten für 1 Sekunde
+            for (int l = 0; l <= addAnzahlLEDs; l++) {
+                service.turnLedOff(l);
+                service.setDelayInMillis(300);
+            }
+
+            service.stopExecutionFor(1000);
+        }
+
+        // 9. Zurücksetzen der Anzeige
+        service.reset();
+
+        // Scanner schliessen
+        sc.close();
     }
 
 }
