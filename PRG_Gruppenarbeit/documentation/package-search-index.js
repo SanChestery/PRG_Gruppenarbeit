@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"ch.hslu.prg.leds.proxy"}];updateSearchResults();

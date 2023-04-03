@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"ch.hslu.prg.leds.proxy","l":"LedColor"},{"p":"ch.hslu.prg.leds.proxy","l":"LedService"}];updateSearchResults();
