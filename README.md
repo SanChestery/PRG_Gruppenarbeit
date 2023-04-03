@@ -15,6 +15,6 @@ Special Libraries used (included into lib folder):
 Collaborators: 
   Michael Lüthi
   Christian Kellenberg
-  Felix Luca
+  Luca Felix
   Yann Santschi
   
