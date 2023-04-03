@@ -24,10 +24,10 @@ public class ClientApp {
         LedService service = new LedService();
 
         // Aufgabe 1: Call ledsOnOff
-      //  ledsOnOff(service);
+        ledsOnOff(service);
 
         // Aufgabe 2: Call switchEvenOdd
-        // switchEvenOdd(service);
+        switchEvenOdd(service);
 
         // Aufgabe 3: Call switchRandom
         switchRandom(service);
